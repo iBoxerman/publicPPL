@@ -84,15 +84,20 @@ export const applyEnv = (env: Env, v: string): Result<number> =>
 
 const applyGlobalEnv = (env: GlobalEnv, v: string): Result<number> => {
   const index = findIndex(env.vars, v, 0)
+  console.log('applyGlobalEnv:')
+  console.log('GE:%j', theGlobalEnv, '|')
+  console.log('v:', v, '|')
+  console.log('index:', index, '|')
+
   return index >= 0 ? makeOk(unbox(env.addresses[index])) : makeFailure("value doesn't exist")
 }
 
 const findIndex = (vars: Box<string[]>, v: string, pos: number): number =>
-  vars.length > 0 ? (unbox(unbox(vars)) === v ? pos : findIndex(rest(vars), v, pos + 1)) : -1
+  vars.length > 0 ? unbox(vars).indexOf(v) : -1
 
 export const globalEnvAddBinding = (v: string, addr: number): void => {
-  theGlobalEnv.addresses.push(makeBox(addr))
-  theGlobalEnv.vars.push(makeBox(v))
+  setBox(theGlobalEnv.addresses, unbox(theGlobalEnv.addresses).concat(addr))
+  setBox(theGlobalEnv.vars, unbox(theGlobalEnv.vars).concat(v))
 }
 
 const applyExtEnv = (env: ExtEnv, v: string): Result<number> =>

@@ -39,7 +39,7 @@ import {
 ;;         |  ( let ( <binding>* ) <cexp>+ )  / LetExp(bindings:Binding[], body:CExp[]))
 ;;         |  ( quote <sexp> )                / LitExp(val:SExp)
 ;;         |  ( <cexp> <cexp>* )              / AppExp(operator:CExp, operands:CExp[]))
-;;         |  ( set! <var> <cexp>)            / SetExp (var: varRef, val CExp)
+;;         |  ( set! <var> <cexp>)            / SetExp (var: varRef, val: CExp)
 ;; <binding>  ::= ( <var> <cexp> )            / Binding(var:VarDecl, val:Cexp)
 ;; <prim-op>  ::= + | - | * | / | < | > | = | not |  eq? | string=?
 ;;                  | cons | car | cdr | list | pair? | list? | number?
