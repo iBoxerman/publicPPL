@@ -4,7 +4,7 @@ import { map, zipWith } from 'ramda'
 import { Sexp, Token } from 's-expression'
 import { allT, first, second, rest, isEmpty } from '../shared/list'
 import { isArray, isString, isNumericString, isIdentifier } from '../shared/type-predicates'
-import { parse as p, isSexpString, isToken } from '../shared/parser'
+import { parse as p, isSexpString, isToken, parse } from '../shared/parser'
 import { Result, makeOk, makeFailure, bind, mapResult, safe2 } from '../shared/result'
 import { isSymbolSExp, isEmptySExp, isCompoundSExp } from './L21-value-store'
 import {
@@ -457,7 +457,6 @@ const unparseLitExp = (le: LitExp): string =>
     : isCompoundSExp(le.val)
     ? `'${valueToString(le.val)}`
     : `${le.val}`
-
 const unparseLExps = (les: Exp[]): string => map(unparse, les).join(' ')
 
 const unparseProcExp = (pe: ProcExp): string =>
@@ -469,8 +468,7 @@ const unparseBindings = (bdgs: Binding[]): string =>
 const unparseLetExp = (le: LetExp): string =>
   `(let (${unparseBindings(le.bindings)}) ${unparseLExps(le.body)})`
 
-const unparseSetExp = (ste: SetExp): string =>
-  `(set! ${ste.var} ${map((c: CExp) => unparse, ste.val).join(' ')}})`
+const unparseSetExp = (ste: SetExp): string => `(set! ${ste.var.var} ${unparse(ste.val)})`
 
 export const unparse = (exp: Parsed): string =>
   isBoolExp(exp)
